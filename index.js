@@ -200,6 +200,7 @@ async function checkRssFeed() {
     }
 }
 
+
 client.on('messageCreate', message => {
   if (message.content === '!test') {
     message.channel.send('pong!');
