@@ -205,6 +205,10 @@ client.on('ready', async () => {
     if (client.rssCheckInterval) {
         clearInterval(client.rssCheckInterval);
     }
+    const testChannelId =  client.channels.cache.get(TARGET_CHANNEL_ID);
+    client.channels.fetch(testChannelId)
+        .then(channel => channel.send('บอทพร้อมทดสอบส่งข้อความแล้ว!'))
+        .catch(console.error);
     client.rssCheckInterval = setInterval(checkRssFeed, RSS_CHECK_INTERVAL_MS);
     console.log(`Started RSS feed check loop every ${RSS_CHECK_INTERVAL_MS / 1000} seconds.`);
     checkRssFeed();
