@@ -14,8 +14,11 @@ const GUID_FILE = path.resolve(__dirname, 'last_processed_guid.json');
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent // <== สำคัญมาก!
     ]
 });
+
 
 const parser = new Parser();
 let lastProcessedGuid = null;
