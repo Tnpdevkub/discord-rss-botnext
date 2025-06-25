@@ -199,16 +199,6 @@ async function checkRssFeed() {
         }
     }
 }
-client.once('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-
-  const testChannelId = process.env.DISCORD_CHANNEL_ID; // หรือใส่ตรง ๆ เลย
-  client.channels.fetch(testChannelId)
-    .then(channel => {
-      channel.send('บอทพร้อมทำงานแล้ว!');
-    })
-    .catch(console.error);
-});
 
 client.on('messageCreate', message => {
   if (message.content === '!test') {
@@ -217,18 +207,26 @@ client.on('messageCreate', message => {
 });
 
 
-// Initialize the Discord client and set up event listeners
-client.on('ready', async () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+client.once('ready', async () => {
+  console.log(`Logged in as ${client.user.tag}!`);
 
-    await loadLastProcessedGuid();
-    if (client.rssCheckInterval) {
-        clearInterval(client.rssCheckInterval);
-    }
-    
-    client.rssCheckInterval = setInterval(checkRssFeed, RSS_CHECK_INTERVAL_MS);
-    console.log(`Started RSS feed check loop every ${RSS_CHECK_INTERVAL_MS / 1000} seconds.`);
-    checkRssFeed();
+  const testChannelId = process.env.DISCORD_CHANNEL_ID;
+  try {
+    const channel = await client.channels.fetch(testChannelId);
+    await channel.send('บอทพร้อมทำงานแล้ว!');
+  } catch (err) {
+    console.error('ไม่สามารถส่งข้อความพร้อมทำงานได้:', err);
+  }
+
+  await loadLastProcessedGuid();
+
+  if (client.rssCheckInterval) {
+    clearInterval(client.rssCheckInterval);
+  }
+
+  client.rssCheckInterval = setInterval(checkRssFeed, RSS_CHECK_INTERVAL_MS);
+  console.log(`Started RSS feed check loop every ${RSS_CHECK_INTERVAL_MS / 1000} seconds.`);
+  checkRssFeed();
 });
 
 client.on('error', error => {
