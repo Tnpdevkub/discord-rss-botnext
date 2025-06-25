@@ -208,8 +208,8 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', message => {
-  if (message.content === '!ping') {
-    message.channel.send('TestGame!');
+  if (message.content === '!test') {
+    message.channel.send('pong!');
   }
 });
 
